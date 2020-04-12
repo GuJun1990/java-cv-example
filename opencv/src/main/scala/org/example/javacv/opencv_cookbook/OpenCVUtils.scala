@@ -109,12 +109,12 @@ object OpenCVUtils {
   }
 
   /** 将图像保存到指定的文件。
-    *
-    * 根据文件扩展名选择图像格式（有关扩展名列表，请参见OpenCV文档中的“ imread（）”）。
-    * 使用此功能只能保存8位（如果是PNG，JPEG 2000和TIFF，则为16位）单通道或3通道（“ BGR”通道顺序）图像。
-    * 如果格式，深度或通道顺序不同，请在保存之前使用Mat :: convertTo（）和cvtColor（）进行转换。
-    *
-    * @param file 文件保存路径。文件扩展名决定输出图像格式。
+   *
+   * 根据文件扩展名选择图像格式（有关扩展名列表，请参见OpenCV文档中的“ imread（）”）。
+   * 使用此功能只能保存8位（如果是PNG，JPEG 2000和TIFF，则为16位）单通道或3通道（“ BGR”通道顺序）图像。
+   * 如果格式，深度或通道顺序不同，请在保存之前使用Mat :: convertTo（）和cvtColor（）进行转换。
+   *
+   * @param file 文件保存路径。文件扩展名决定输出图像格式。
     * @param image 待保存的图片
     */
   def save(file: File, image: Mat): Unit = {
