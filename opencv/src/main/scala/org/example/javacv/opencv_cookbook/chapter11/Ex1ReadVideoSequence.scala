@@ -6,6 +6,7 @@ import org.bytedeco.javacv.{CanvasFrame, FFmpegFrameGrabber}
 import scala.collection.Iterator.continually
 
 object Ex1ReadVideoSequence {
+
   def main(args: Array[String]): Unit = {
     val grabber = new FFmpegFrameGrabber("data/bike.avi")
     grabber.start()
@@ -24,7 +25,6 @@ object Ex1ReadVideoSequence {
       // Delay
       Thread.sleep(delay)
     }
-
     // Close the video file
     grabber.release()
   }
