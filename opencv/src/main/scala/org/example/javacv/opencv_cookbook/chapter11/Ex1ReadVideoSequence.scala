@@ -11,12 +11,11 @@ object Ex1ReadVideoSequence {
     val grabber = new FFmpegFrameGrabber("data/bike.avi")
     grabber.start()
     val canvasFrame = new CanvasFrame("Extracted Frame", 1)
+    println("w: " + grabber.getImageWidth + ", h: " + grabber.getImageHeight + ", frame size: " + grabber.getLengthInFrames + ", fps: " + grabber.getFrameRate)
     canvasFrame.setCanvasSize(grabber.getImageWidth, grabber.getImageHeight)
     // Exit the example when the canvas frame is closed
     canvasFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE)
-
     val delay = math.round(1000d / grabber.getFrameRate)
-
     // Read frame by frame, stop early if the display window is closed
     for (frame <- continually(grabber.grab()).takeWhile(_ != null)
          if canvasFrame.isVisible) {
