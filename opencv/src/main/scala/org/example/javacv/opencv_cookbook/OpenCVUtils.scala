@@ -24,44 +24,40 @@ import org.bytedeco.opencv.opencv_core.{Point, _}
 import scala.math.round
 
 
-/** Helper methods that simplify use of OpenCV API. */
+/** 简化OpenCV API使用的辅助方法. */
 object OpenCVUtils {
 
-  /** Load an image and show in a CanvasFrame. If image cannot be loaded the application will exit with code 1.
+  /** 加载图像并在CanvasFrame中显示。如果无法加载图像，则应用程序将退出并显示代码1
     *
-    * @param flags Flags specifying the color type of a loaded image:
+    * @param flags 指定已加载图像的颜色类型的标志：
     *              <ul>
-    *              <li> `>0` Return a 3-channel color image</li>
-    *              <li> `=0` Return a gray scale image</li>
-    *              <li> `<0` Return the loaded image as is. Note that in the current implementation
-    *              the alpha channel, if any, is stripped from the output image. For example, a 4-channel
-    *              RGBA image is loaded as RGB if the `flags` is greater than 0.</li>
+    *              <li> `>0` 返回三通道彩色图像</li>
+    *              <li> `=0` 返回灰度图像</li>
+    *              <li> `<0` 照原样返回加载的图像。注意，在当前实现中从输出图像中剥离了Alpha通道（如果有）。例如，如果`flags'大于0，则将4通道RGBA图像加载为RGB。</li>
     *              </ul>
-    *              Default is gray scale.
-    * @return loaded image
-    */
+    *              默认值为彩色图像。
+    *              @return loaded image
+   * */
   def loadAndShowOrExit(file: File, flags: Int = IMREAD_COLOR): Mat = {
-    // Read input image
+    // 读取输入图像
     val image = loadOrExit(file, flags)
     show(image, file.getName)
     image
   }
 
-  /** Load an image. If image cannot be loaded the application will exit with code 1.
+  /** 加载图像。如果无法加载图像，则应用程序将退出并显示代码1。
     *
-    * @param flags Flags specifying the color type of a loaded image:
+    * @param flags 指定已加载图像的颜色类型的标志：
     *              <ul>
-    *              <li> `>0` Return a 3-channel color image</li>
-    *              <li> `=0` Return a gray scale image</li>
-    *              <li> `<0` Return the loaded image as is. Note that in the current implementation
-    *              the alpha channel, if any, is stripped from the output image. For example, a 4-channel
-    *              RGBA image is loaded as RGB if the `flags` is greater than 0.</li>
+    *              <li> `>0` 返回三通道彩色图像</li>
+    *              <li> `=0` 返回灰度图像</li>
+    *              <li> 照原样返回加载的图像。注意，在当前实现中从输出图像中剥离了Alpha通道（如果有）。例如，如果`flags'大于0，则将4通道RGBA图像加载为RGB。</li>
     *              </ul>
-    *              Default is gray scale.
+    *              默认值为彩色图像。
     * @return loaded image
-    */
+   * */
   def loadOrExit(file: File, flags: Int = IMREAD_COLOR): Mat = {
-    // Read input image
+    // 读取输入图像
     val image = imread(file.getAbsolutePath, flags)
     if (image.empty()) {
       println("Couldn't load image: " + file.getAbsolutePath)
@@ -70,7 +66,7 @@ object OpenCVUtils {
     image
   }
 
-  /** Show image in a window. Closing the window will exit the application. */
+  /** 在窗口中显示图像。关闭窗口将退出应用程序。 */
   def show(mat: Mat, title: String): Unit = {
     val converter = new ToMat()
     val canvas = new CanvasFrame(title, 1)
@@ -78,7 +74,7 @@ object OpenCVUtils {
     canvas.showImage(converter.convert(mat))
   }
 
-  /** Show image in a window. Closing the window will exit the application. */
+  /** 在窗口中显示图像。关闭窗口将退出应用程序。 */
   def show(image: Image, title: String): Unit = {
     val canvas = new CanvasFrame(title, 1)
     canvas.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE)
@@ -86,7 +82,7 @@ object OpenCVUtils {
   }
 
 
-  /** Draw red circles at point locations on an image. */
+  /** 在图像上的点位置绘制红色圆圈。 */
   def drawOnImage(image: Mat, points: Point2fVector): Mat = {
     val dest = image.clone()
     val radius = 5
@@ -99,12 +95,12 @@ object OpenCVUtils {
     dest
   }
 
-  /** Draw a shape on an image.
+  /** 在图像上绘制形状。
     *
     * @param image   input image
     * @param overlay shape to draw
     * @param color   color to use
-    * @return new image with drawn overlay
+    * @return 绘制叠加层的新图像
     */
   def drawOnImage(image: Mat, overlay: Rect, color: Scalar): Mat = {
     val dest = image.clone()
@@ -112,58 +108,57 @@ object OpenCVUtils {
     dest
   }
 
-  /** Save the image to the specified file.
+  /** 将图像保存到指定的文件。
     *
-    * The image format is chosen based on the filename extension (see `imread()` in OpenCV documentation for the list of extensions).
-    * Only 8-bit (or 16-bit in case of PNG, JPEG 2000, and TIFF) single-channel or
-    * 3-channel (with ‘BGR’ channel order) images can be saved using this function.
-    * If the format, depth or channel order is different, use Mat::convertTo() , and cvtColor() to convert it before saving.
+    * 根据文件扩展名选择图像格式（有关扩展名列表，请参见OpenCV文档中的“ imread（）”）。
+    * 使用此功能只能保存8位（如果是PNG，JPEG 2000和TIFF，则为16位）单通道或3通道（“ BGR”通道顺序）图像。
+    * 如果格式，深度或通道顺序不同，请在保存之前使用Mat :: convertTo（）和cvtColor（）进行转换。
     *
-    * @param file  file to save to. File name extension decides output image format.
-    * @param image image to save.
+    * @param file 文件保存路径。文件扩展名决定输出图像格式。
+    * @param image 待保存的图片
     */
   def save(file: File, image: Mat): Unit = {
     imwrite(file.getAbsolutePath, image)
   }
 
-  /** Convert native vector to JVM array.
+  /** 将Native vector 转换为JVM数组。
     *
-    * @param keyPoints pointer to a native vector containing KeyPoints.
+    * @param keyPoints 指向包含KeyPoints的Native vector的指针
     */
   def toArray(keyPoints: KeyPoint): Array[KeyPoint] = {
     val oldPosition = keyPoints.position()
-    // Convert keyPoints to Scala sequence
+    // 将keyPoints转换为Scala序列
     val points = for (i <- Array.range(0, keyPoints.capacity.toInt)) yield new KeyPoint(keyPoints.position(i))
-    // Reset position explicitly to avoid issues from other uses of this position-based container.
+    // 明确重置位置，以避免此基于位置的容器的其他用途引起问题。
     keyPoints.position(oldPosition)
 
     points
   }
 
-  /** Convert native vector to JVM array.
+  /** 将Native vector 转换为JVM数组。
     *
-    * @param keyPoints pointer to a native vector containing KeyPoints.
+    * @param keyPoints 指向包含KeyPoints的Native vector的指针
     */
   def toArray(keyPoints: KeyPointVector): Array[KeyPoint] = {
-    // for the simplicity of the implementation we will assume that number of key points is within Int range.
+    // 为了简化实施，我们将假定关键点的数量在Int范围内。
     require(keyPoints.size() <= Int.MaxValue)
     val n = keyPoints.size().toInt
 
-    // Convert keyPoints to Scala sequence
+    // 将keyPoints转换为Scala序列
     for (i <- Array.range(0, n)) yield new KeyPoint(keyPoints.get(i))
   }
 
-  /** Convert native vector to JVM array.
+  /** 将Native vector 转换为JVM数组。
     *
-    * @param matches pointer to a native vector containing DMatches.
+    * @param matches 指向包含DMatches的Native vector的指针。
     * @return
     */
   def toArray(matches: DMatchVector): Array[DMatch] = {
-    // for the simplicity of the implementation we will assume that number of key points is within Int range.
+    // 为了简化实施，我们将假定关键点的数量在Int范围内。
     require(matches.size() <= Int.MaxValue)
     val n = matches.size().toInt
 
-    // Convert keyPoints to Scala sequence
+    // 将keyPoints转换为Scala序列
     for (i <- Array.range(0, n)) yield new DMatch(matches.get(i))
   }
 
@@ -178,11 +173,11 @@ object OpenCVUtils {
 
 
   /**
-    * Convert `Mat` to one where pixels are represented as 8 bit unsigned integers (`CV_8U`).
-    * It creates a copy of the input image.
+    * 将Mat转换为1，其中像素以8位无符号整数（CV_8U）表示
+    * 它创建输入图像的副本。
     *
     * @param src input image.
-    * @return copy of the input with pixels values represented as 8 bit unsigned integers.
+    * @return 输入的副本，像素值表示为8位无符号整数。
     */
   def toMat8U(src: Mat, doScaling: Boolean = true): Mat = {
     val minVal = new DoublePointer(Double.MaxValue)
@@ -201,7 +196,7 @@ object OpenCVUtils {
   }
 
   def toMatPoint2f(points: Seq[Point2f]): Mat = {
-    // Create Mat representing a vector of Points3f
+    // 创建代表Point3f向量的Mat
     val dest = new Mat(1, points.size, CV_32FC2)
     val indx = dest.createIndexer().asInstanceOf[FloatIndexer]
     for (i <- points.indices) {
@@ -214,11 +209,11 @@ object OpenCVUtils {
   }
 
   /**
-    * Convert a sequence of Point3D to a Mat representing a vector of Points3f.
-    * Calling  `checkVector(3)` on the return value will return non-negative value indicating that it is a vector with 3 channels.
+    * 将Point3D的序列转换为表示Point3f的向量的Mat。
+    * 在返回值上调用`checkVector（3）`将返回非负值，表明它是具有3个通道的向量。
     */
   def toMatPoint3f(points: Seq[Point3f]): Mat = {
-    // Create Mat representing a vector of Points3f
+    // 创建代表Point3f向量的Mat
     val dest = new Mat(1, points.size, CV_32FC3)
     val indx = dest.createIndexer().asInstanceOf[FloatIndexer]
     for (i <- points.indices) {
@@ -242,12 +237,12 @@ object OpenCVUtils {
   }
 
   /**
-    * Convert a vector of Point2f to a Mat representing a vector of Points2f.
+    * 将Point2f的向量转换为表示Points2f的向量的Mat。
     */
   def toMat(points: Point2fVector): Mat = {
-    // Create Mat representing a vector of Points3f
+    // 创建代表Point3f向量的Mat
     val size: Int = points.size.toInt
-    // Argument to Mat constructor must be `Int` to mean sizes, otherwise it may be interpreted as content.
+    // Mat构造函数的参数必须为“ Int”以表示大小，否则可能被解释为内容。
     val dest = new Mat(1, size, CV_32FC2)
     val indx = dest.createIndexer().asInstanceOf[FloatIndexer]
     for (i <- 0 until size) {
@@ -259,7 +254,7 @@ object OpenCVUtils {
   }
 
 
-  /** Convert a Scala collection to a JavaCV "vector".
+  /** 将Scala集合转换为JavaCV“向量”。
     *
     * @param src Scala collection
     * @return JavaCV/native collection
@@ -271,7 +266,7 @@ object OpenCVUtils {
   }
 
   /**
-    * Creates a `MatVector` and put `mat` as its only element.
+    * 创建一个MatVector并将mat作为唯一元素。
     *
     * @return
     */
@@ -280,7 +275,7 @@ object OpenCVUtils {
   }
 
   /**
-    * Creates a `IntBuffer` and put `v` as its only element.
+    * 创建一个IntBuffer，并将v用作唯一元素。
     *
     * @return
     */
@@ -289,7 +284,7 @@ object OpenCVUtils {
   }
 
   /**
-    * Creates a `IntPointer` and put `v` as its only element.
+    * 创建一个“ IntPointer”并将“ v”作为其唯一元素。
     *
     * @return
     */
@@ -299,7 +294,7 @@ object OpenCVUtils {
 
 
   /**
-    * Print info about the `mat`.
+    * 打印有关`mat`的信息。
     */
   def printInfo(mat: Mat, caption: String = ""): Unit = {
     println(
