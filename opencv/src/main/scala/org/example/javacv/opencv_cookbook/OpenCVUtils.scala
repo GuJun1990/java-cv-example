@@ -143,7 +143,6 @@ object OpenCVUtils {
     // 为了简化实施，我们将假定关键点的数量在Int范围内。
     require(keyPoints.size() <= Int.MaxValue)
     val n = keyPoints.size().toInt
-
     // 将keyPoints转换为Scala序列
     for (i <- Array.range(0, n)) yield new KeyPoint(keyPoints.get(i))
   }
@@ -291,7 +290,6 @@ object OpenCVUtils {
   def wrapInIntPointer(v: Int): IntPointer = {
     new IntPointer(1L).put(v)
   }
-
 
   /**
     * 打印有关`mat`的信息。
