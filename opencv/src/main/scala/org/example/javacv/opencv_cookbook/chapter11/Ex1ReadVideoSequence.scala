@@ -17,8 +17,7 @@ object Ex1ReadVideoSequence {
     canvasFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE)
     val delay = math.round(1000d / grabber.getFrameRate)
     // Read frame by frame, stop early if the display window is closed
-    for (frame <- continually(grabber.grab()).takeWhile(_ != null)
-         if canvasFrame.isVisible) {
+    for (frame <- continually(grabber.grab()).takeWhile(_ != null) if canvasFrame.isVisible) {
       // Capture and show the frame
       canvasFrame.showImage(frame)
       // Delay

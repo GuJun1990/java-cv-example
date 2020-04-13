@@ -18,7 +18,8 @@ object Ex2ProcessVideoFrames {
   def main(args: Array[String]): Unit = {
     // 创建视频处理器实例
     val processor = new VideoProcessor()
-    processor.input = "data/bike.avi"
+//    processor.input = "data/bike.avi"
+    processor.input = "data/688990700.mp4"
     // 声明一个窗口以显示输入和输出视频
     processor.displayInput = "Input Video"
     processor.displayOutput = "Output Video"

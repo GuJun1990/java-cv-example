@@ -9,7 +9,7 @@ import org.bytedeco.opencv.opencv_core._
  * @author gujun@qiyi.com
  * @since 2020/4/13 8:17 下午
  */
-class ColorDetector(private var _minDist: Int = 100,
-                    private var _target: ColorRGB = ColorRGB(130, 190, 230)) {
-
-}
+//class ColorDetector(private var _minDist: Int = 100,
+//                    private var _target: ColorRGB = ColorRGB(130, 190, 230)) {
+//
+//}
