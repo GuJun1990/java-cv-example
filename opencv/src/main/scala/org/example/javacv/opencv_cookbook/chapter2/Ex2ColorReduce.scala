@@ -39,8 +39,8 @@ object Ex2ColorReduce {
     // 索引器用于访问图像中的值
     val indexer = image.createIndexer().asInstanceOf[UByteIndexer]
     // 元素总数，合并每个通道的组件
-    val nbElements = image.rows * image.cols * image.channels
-    // 于运算掩码
+    val nbElements = image.rows * image.cols * image.channels // 将所有像素点拉成一行
+    // 与运算掩码
     val mask = 0xff << div
     val off = 0x1 << (div-1)
     for (i <- 0 until nbElements) {
@@ -49,7 +49,7 @@ object Ex2ColorReduce {
       // 使用整数除法以减少值的数量
 //      val newV = v / div * div + div // div 为 2^div
       val newV = (v & mask) + off // 位运算操作
-      // 重新放回图片
+      // 重新放回图像
       indexer.put(i, (newV & 0xFF).toByte)
     }
     image

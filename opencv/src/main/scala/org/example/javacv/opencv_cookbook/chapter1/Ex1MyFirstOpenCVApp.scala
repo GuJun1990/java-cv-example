@@ -1,19 +1,19 @@
-package org.example.javacv.opencv_cookbook
+package org.example.javacv.opencv_cookbook.chapter1
 
 import javax.swing.WindowConstants
 import org.bytedeco.javacv.{CanvasFrame, OpenCVFrameConverter}
-import org.bytedeco.opencv.global.opencv_imgcodecs._
+import org.bytedeco.opencv.global.opencv_imgcodecs.imread
 
 /**
  * 使用JavaCV API加载和显示图像的示例
  * 注意，在Scala示例代码中，如何使用JavaCV API中的CanvasFrame来显示图像
  */
-object MyFirstOpenCVApp {
+object Ex1MyFirstOpenCVApp {
   def main(args: Array[String]): Unit = {
     // 读取图片
     val image = imread("data/boldt.jpg");
     if (image.empty()) {
-      println("Error reading image!")
+      println("读取图像失败！")
       System.exit(-1);
     }
     // 创建图片窗口命名为"My Image"

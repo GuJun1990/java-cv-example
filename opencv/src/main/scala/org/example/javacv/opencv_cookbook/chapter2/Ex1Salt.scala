@@ -34,15 +34,17 @@ object Ex1Salt {
     // 随机数发生器
     val random = new Random()
     // 获取图像数据
-    val indexer = image.createIndexer().asInstanceOf[UByteIndexer]
+    val indexer = image.createIndexer().asInstanceOf[UByteIndexer] // 把Indexer转成UByteIndexer对象
     // 将n粒放在随机位置
-    val nbChannels = image.channels
+    val nbChannels = image.channels // 图像通道数
     for (_ <- 1 to n) {
       // 创建像素的随机索引
       val row: Long = random.nextInt(image.rows)
       val col: Long = random.nextInt(image.cols)
       // 通过将每个通道设置为最大值（255）将其设置为白色
       for (i <- 0 until nbChannels) {
+        // 多通道图像
+        // (列，行，通道，像素值)
         indexer.put(row, col, i.toLong, 255.toByte)
       }
     }
